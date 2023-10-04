@@ -33,7 +33,20 @@ build_dut:
 	-file ${RTL_ROOT}/files.f \
 	-l build_dut.log \
 
-build: build_dut
+build_tb:
+	vlogan -sverilog -work work_tb \
+	-ntb_opts uvm -full64 \
+	${DV_ROOT}/tb/tb_top.sv \
+	${DV_ROOT}/intf/fifo_if.sv \
+	-l build_tb.log 
+
+build_all:
+	make -j \
+		build_uvm \
+		build_dut \
+		build_tb
+
+build: build_all
 	vcs -sverilog -full64 -debug_access+all \
 	-override_timescale=1ps/1fs \
 	+vcs+lic+wait \

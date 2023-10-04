@@ -4,3 +4,4 @@ DEFAULT : ./work
 --Library Mapping
 work_uvm : ./work_uvm
 work_dut : ./work_dut
+work_tb : ./work_tb
