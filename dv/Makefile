@@ -47,10 +47,8 @@ build_all:
 		build_tb
 
 build: build_all
-	vcs -sverilog -full64 -debug_access+all \
+	vcs -top tb_top -sverilog -full64 -debug_access+all \
+	-ntb_opts uvm \
 	-override_timescale=1ps/1fs \
-	+vcs+lic+wait \
-	${DV_ROOT}/intf/fifo_if.sv \
-	${REPO_ROOT}/src/rtl/fifo.sv \
-	tb/tb_top.sv
+	+vcs+lic+wait
 
