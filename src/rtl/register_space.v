@@ -29,7 +29,7 @@ module register_space #(
 
         // Parameters of Axi Slave Bus Interface S00_AXI
         parameter integer C_S00_AXI_DATA_WIDTH  = 32,
-        parameter integer C_S00_AXI_ADDR_WIDTH  = 10
+        parameter integer C_S00_AXI_ADDR_WIDTH  = 3
     )
     (
         // Users to add ports here

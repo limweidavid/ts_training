@@ -56,7 +56,7 @@ module top (
 
     register_space #(
         .C_S00_AXI_DATA_WIDTH(32),
-        .C_S00_AXI_ADDR_WIDTH(10)
+        .C_S00_AXI_ADDR_WIDTH(3)
     ) register_space_dut (
         .s00_axi_aclk   (clk        ), //input wire
         .s00_axi_aresetn(resetn     ), //input wire
