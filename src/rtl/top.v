@@ -83,8 +83,10 @@ module top (
 
 
     fifo #(
-        .WIDTH   (8            ),
+        .WIDTH   (32            ),
         .DEPTH   (4            ),
+	.C_M_AXIS_TDATA_WIDTH(32),
+	.C_S_AXIS_TDATA_WIDTH(32),
         .PTRWIDTH($clog2(DEPTH))
     ) fifo_dut (
         .clk          (clk          ), //input  wire

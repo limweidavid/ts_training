@@ -1,6 +1,8 @@
 module fifo #(
-    parameter  WIDTH    = 8            ,
+    parameter  WIDTH    = 32            ,
     parameter  DEPTH    = 4            ,
+    parameter C_M_AXIS_TDATA_WIDTH = 32,
+    parameter C_S_AXIS_TDATA_WIDTH = 32,
     localparam PTRWIDTH = $clog2(DEPTH)
 ) (
     input  wire                            clk          ,
@@ -11,15 +13,16 @@ module fifo #(
     input  wire                            S_AXIS_TLAST ,
     input  wire                            S_AXIS_TVALID,
     // MASTER INTERFACE
-    output wire                            M_AXIS_TVALID,
-    output wire [C_M_AXIS_TDATA_WIDTH-1:0] M_AXIS_TDATA ,
-    output wire                            M_AXIS_TLAST ,
+    output reg                            M_AXIS_TVALID,
+    output reg [C_M_AXIS_TDATA_WIDTH-1:0] M_AXIS_TDATA ,
+    output reg                            M_AXIS_TLAST ,
     input  wire                            M_AXIS_TREADY
 );
 
     wire rd_en;
     wire full ;
     wire empty;
+    wire writes_done;
 
     reg [ WIDTH-1:0] mem   [DEPTH];
     reg [PTRWIDTH:0] wr_ptr, rd_ptr;
