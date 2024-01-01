@@ -24,20 +24,19 @@ clean:
 
 build_uvm:
 	vlogan -work work_uvm \
-	-ntb_opts uvm -full64 \
+	-ntb_opts uvm-1.2 -full64 \
 	-l build_uvm.log \
 
 build_dut:
 	vlogan -work work_dut \
-	-ntb_opts uvm -full64 \
+	-ntb_opts uvm-1.2 -full64 \
 	-file ${RTL_ROOT}/files.f \
 	-l build_dut.log \
 
 build_tb:
 	vlogan -sverilog -work work_tb \
-	-ntb_opts uvm -full64 \
-	${DV_ROOT}/tb/tb_top.sv \
-	${DV_ROOT}/intf/fifo_if.sv \
+	-ntb_opts uvm-1.2 -full64 \
+	-file ${DV_ROOT}/tb/filelist.f \
 	-l build_tb.log 
 
 build_all:
@@ -48,7 +47,10 @@ build_all:
 
 build: build_all
 	vcs -top tb_top -sverilog -full64 -debug_access+all \
-	-ntb_opts uvm \
+	-ntb_opts uvm-1.2 \
 	-override_timescale=1ps/1fs \
 	+vcs+lic+wait
+
+test_build: 
+	vcs -sverilog -ntb_opts uvm-1.2 -full64 -debug_access+all -top tb_top -file ${RTL_ROOT}/files.f -file ${DV_ROOT}/tb/filelist.f -override_timescale=1ps/1fs +vcs+lic+wait 
 

@@ -14,7 +14,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-interface fifo_if #(parameter WIDTH=8) (input clk);
+interface fifo_interface #(parameter WIDTH=8) (input clk);
     
     logic             rstn;
     // SLAVE INTERFACE

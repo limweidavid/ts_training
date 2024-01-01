@@ -35,13 +35,24 @@ class fifo_driver extends uvm_driver #(fifo_sequence_item);
           seq_item_port.get_next_item(req);
           `uvm_info(get_full_name(), "Transaction Received", UVM_MEDIUM)
           req.print();
-          fork
-            put_to_dut();
-            get_from_dut();
-          join
+          if (req.reset_dut == 'd1) begin
+              reset_dut();
+          end else begin
+            wait(fifo_intf.rstn == 'd1);
+            fork
+              put_to_dut();
+              get_from_dut();
+            join
+          end
           seq_item_port.item_done();
         end
     endtask
+
+    virtual task reset_dut();
+        fifo_intf.rstn = 'd0;
+        repeat(10)@(posedge fifo_intf.clk);
+        fifo_intf.rstn = 'd1;
+    endtask 
 
     virtual task put_to_dut();
         if(req.put_get == 'd0) begin

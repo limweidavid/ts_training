@@ -1,24 +1,19 @@
-class dut_environment extends uvm_environment;
+class dut_environment extends uvm_env;
 
   `uvm_component_utils(dut_environment)
 
-  fifo_agent       fifo_agent;
-  dut_scoreboard  scoreboard;
+  fifo_agent fifo_agnt;
+  reg_space_agent reg_space_agnt;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
 
-  function build_phase(uvm_phase phase);
+  function void build_phase(uvm_phase phase);
     super.build_phase(phase);
 
-    tx_agent = fifo_agent::type_id::create("tx_agent", this);
-    scoreboard = dut_scoreboard::type_id::create("scoreboard", this);
-  endfunction
-
-  function connect_phase(uvm_phase phase);
-    tx_agent.master_port.connect(scoreboard.);
-    tx_agent.slave_port.connect(scoreboard.);
+    fifo_agnt = fifo_agent::type_id::create("fifo_agnt", this);
+    reg_space_agnt = reg_space_agent::type_id::create("reg_space_agnt", this);
   endfunction
 
 endclass : dut_environment

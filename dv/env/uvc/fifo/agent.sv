@@ -13,7 +13,7 @@ class fifo_agent extends uvm_agent;
     super.new(name, parent);
   endfunction
 
-  function build_phase (uvm_phase phase);
+  function void build_phase (uvm_phase phase);
     super.build_phase(phase);
 
     master_port = new ("master_port", this);
@@ -28,7 +28,7 @@ class fifo_agent extends uvm_agent;
     end
   endfunction : build_phase
 
-  function connect_phase (uvm_phase phase); 
+  function void connect_phase (uvm_phase phase); 
     m_mntr.mon2scb_port.connect(master_port);
     s_mntr.mon2scb_port.connect(slave_port);
 

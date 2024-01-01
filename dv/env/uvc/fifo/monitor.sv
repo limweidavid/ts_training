@@ -43,8 +43,8 @@ class fifo_master_monitor extends uvm_monitor;
 
     virtual task monitor_data();
         @(posedge fifo_intf.clk);
-        if(M_AXIS_TVALID == 'd1 && M_AXIS_TREADY == 'd1) begin
-            seq_item.data = fifo_intf.data;
+        if(fifo_intf.M_AXIS_TVALID == 'd1 && fifo_intf.M_AXIS_TREADY == 'd1) begin
+            seq_item.data = fifo_intf.M_AXIS_TDATA;
             mon2scb_port.write(seq_item);
         end
     endtask 
@@ -79,8 +79,8 @@ class fifo_slave_monitor extends uvm_monitor;
 
     virtual task monitor_data();
         @(posedge fifo_intf.clk);
-        if(S_AXIS_TVALID == 'd1 && S_AXIS_TREADY == 'd1) begin
-            seq_item.data = fifo_intf.data;
+        if(fifo_intf.S_AXIS_TVALID == 'd1 && fifo_intf.S_AXIS_TREADY == 'd1) begin
+            seq_item.data = fifo_intf.S_AXIS_TDATA;
             mon2scb_port.write(seq_item);
         end
     endtask 

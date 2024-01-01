@@ -14,8 +14,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-interface axi_if #(parameter WIDTH=32) (input clk);
-    logic          resetn       ;
+interface reg_space_interface #(parameter WIDTH=32) (input clk, input resetn);
     logic [WIDTH-1:0] axi_awaddr   ;
     logic [   2:0] axi_awprot   ;
     logic          axi_awvalid  ;

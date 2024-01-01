@@ -1,82 +1,59 @@
+`include "uvm_macros.svh"
 module tb_top;
+    import uvm_pkg::*;
+    import dut_uvm_package::*;
 
-    localparam WIDTH=8;
-    localparam DEPTH=4;
-
-    logic clk;
+    reg clk;
     initial clk = 0;
     initial forever #5 clk = ~clk;
 
-    // for scoreboard check
-    logic [WIDTH-1:0] sb_wr_data;
-    logic [WIDTH-1:0] sb_rd_data;
+    fifo_interface fifo_if(clk);
+    reg_space_interface rs_if(clk, fifo_if.rstn);
 
-    fifo_if fifo_if0(clk);
-
-    fifo #(
-        .WIDTH(WIDTH),
-        .DEPTH(DEPTH)
-    )fifo1 (
-        .clk(fifo_if0.clk),
-        .rstn(fifo_if0.rstn),
-        .wr_en(fifo_if0.wr_en),
-        .rd_en(fifo_if0.rd_en),
-        .wr_data(fifo_if0.wr_data),
-        .rd_data(fifo_if0.rd_data),
-        .full(fifo_if0.full),
-        .empty(fifo_if0.empty)
+    top DUT(
+        .clk(clk),
+        .resetn(fifo_if.rstn),
+        .axi_awaddr(rs_if.axi_awaddr),
+        .axi_awprot(rs_if.axi_awprot),
+        .axi_awvalid(rs_if.axi_awvalid),
+        .axi_awready(rs_if.axi_awready),
+        .axi_wdata(rs_if.axi_wdata),
+        .axi_wstrb(rs_if.axi_wstrb),
+        .axi_wvalid(rs_if.axi_wvalid),
+        .axi_wready(rs_if.axi_wready),
+        .axi_bresp(rs_if.axi_bresp),
+        .axi_bvalid(rs_if.axi_bvalid),
+        .axi_bready(rs_if.axi_bready),
+        .axi_araddr(rs_if.axi_araddr),
+        .axi_arprot(rs_if.axi_arprot),
+        .axi_arvalid(rs_if.axi_arvalid),
+        .axi_arready(rs_if.axi_arready),
+        .axi_rdata(rs_if.axi_rdata),
+        .axi_rresp(rs_if.axi_rresp),
+        .axi_rvalid(rs_if.axi_rvalid),
+        .axi_rready(rs_if.axi_rready),
+        .s_axis_tready(fifo_if.S_AXIS_TREADY),
+        .s_axis_tdata(fifo_if.S_AXIS_TDATA),
+        .s_axis_tlast(fifo_if.S_AXIS_TLAST),
+        .s_axis_tvalid(fifo_if.S_AXIS_TVALID),
+        .m_axis_tvalid(fifo_if.M_AXIS_TVALID),
+        .m_axis_tdata(fifo_if.M_AXIS_TDATA),
+        .m_axis_tlast(fifo_if.M_AXIS_TLAST),
+        .m_axis_tready(fifo_if.M_AXIS_TREADY)
     );
 
-    task transmit_data;
-        input [WIDTH-1:0] data;
-        begin
-            fifo_if0.wr_en = 1;
-            fifo_if0.wr_data = data;
-            @(posedge clk);
-            fifo_if0.wr_en = 0;
-        end
-    endtask
-
-    task receive_data;
-        output [WIDTH-1:0] data;
-        begin
-            fifo_if0.rd_en = 1;
-            @(posedge clk);
-            fifo_if0.rd_en = 0;
-            data = fifo_if0.rd_data;
-        end
-    endtask
-
-
     initial begin
-        $vcdpluson;
-        $vcdplusmemon;
-
-        fifo_if0.rstn <= 0;
-        fifo_if0.wr_en <= 0;
-        fifo_if0.rd_en <= 0;
-        fifo_if0.wr_data <= '0;
-
-        repeat(5)@(posedge clk);
-        fifo_if0.rstn <= 1;
-
-        repeat(1)@(posedge clk);
-        while(~fifo_if0.full) begin
-            sb_wr_data = $urandom;
-            transmit_data(sb_wr_data);
-            $display("writing data = %h", sb_wr_data);
-        end
-
-        repeat(1)@(posedge clk);
-        while(~fifo_if0.empty) begin
-            receive_data(sb_rd_data);
-            $display("reading data = %h", sb_rd_data);
-        end
-
-        repeat(5)@(posedge clk);
-        $finish;
+        uvm_config_db #(virtual fifo_interface)::set(null,"*","vif",fifo_if);
+        uvm_config_db #(virtual reg_space_interface)::set(null,"*","vif",rs_if);
     end
 
+    initial begin
+        run_test();
+    end
 
+    initial begin
+        $dumpfile ("wave.vcd");
+        $dumpvars (0);
+    end
 
 endmodule
