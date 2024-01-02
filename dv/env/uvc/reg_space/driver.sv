@@ -31,6 +31,7 @@ class reg_space_driver extends uvm_driver #(reg_space_sequence_item);
     endfunction
 
     virtual task run_phase (uvm_phase phase);
+        initialize_interface();
         forever begin
           seq_item_port.get_next_item(req);
           `uvm_info(get_full_name(), "Transaction Received", UVM_MEDIUM)
@@ -117,6 +118,20 @@ class reg_space_driver extends uvm_driver #(reg_space_sequence_item);
         req.slave_error = 'd0;
       @(posedge reg_space_intf.clk);
       reg_space_intf.axi_rready = 'b0;
+    endtask
+
+    virtual task initialize_interface();
+      reg_space_intf.axi_awaddr = 'd0;
+      reg_space_intf.axi_awprot = 'd0;
+      reg_space_intf.axi_awvalid = 'd0;
+      reg_space_intf.axi_wdata = 'd0;
+      reg_space_intf.axi_wstrb = 'd0;
+      reg_space_intf.axi_wvalid = 'd0;
+      reg_space_intf.axi_bready = 'd0;
+      reg_space_intf.axi_araddr = 'd0;
+      reg_space_intf.axi_arprot = 'd0;
+      reg_space_intf.axi_arvalid = 'd0;
+      reg_space_intf.axi_rready = 'd0;
     endtask
 
 endclass : reg_space_driver

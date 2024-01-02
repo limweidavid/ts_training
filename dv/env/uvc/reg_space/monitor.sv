@@ -36,6 +36,7 @@ class reg_space_write_channel_monitor extends uvm_monitor;
     endfunction
 
     virtual task run_phase (uvm_phase phase);
+        seq_item = reg_space_sequence_item::type_id::create("seq_item", this);
         forever begin
           fork
             address_write_channel();
@@ -100,6 +101,7 @@ class reg_space_read_channel_monitor extends uvm_monitor;
     endfunction
 
     virtual task run_phase (uvm_phase phase);
+        seq_item = reg_space_sequence_item::type_id::create("seq_item", this);
         forever begin
           fork
             address_read_channel();

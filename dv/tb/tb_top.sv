@@ -53,7 +53,7 @@ module tb_top;
 
     initial begin
         $dumpfile ("wave.vcd");
-        $dumpvars (0);
+        $dumpvars (0, tb_top);
     end
 
 endmodule

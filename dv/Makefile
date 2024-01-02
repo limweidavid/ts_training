@@ -1,3 +1,4 @@
+TEST ?= fifo_random_put_test
 .SILENT:
 
 test:
@@ -21,6 +22,7 @@ clean:
 	rm -rf DVEfiles
 	rm -rf ucli.key
 	rm -rf inter.vpd
+	rm -rf wave.vcd
 
 build_uvm:
 	vlogan -work work_uvm \
@@ -53,4 +55,7 @@ build: build_all
 
 test_build: 
 	vcs -sverilog -ntb_opts uvm-1.2 -full64 -debug_access+all -top tb_top -file ${RTL_ROOT}/files.f -file ${DV_ROOT}/tb/filelist.f -override_timescale=1ps/1fs +vcs+lic+wait 
+
+test_sim: 
+	./simv +UVM_TESTNAME=${TEST}
 

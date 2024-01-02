@@ -56,11 +56,11 @@ class fifo_driver extends uvm_driver #(fifo_sequence_item);
 
     virtual task put_to_dut();
         if(req.put_get == 'd0) begin
-            wait(fifo_intf.S_AXIS_TREADY);
             @(posedge fifo_intf.clk);
             fifo_intf.S_AXIS_TDATA = req.data;
             fifo_intf.S_AXIS_TLAST = 'd1;
             fifo_intf.S_AXIS_TVALID = 'd1;
+            wait(fifo_intf.S_AXIS_TREADY);
             @(posedge fifo_intf.clk);
             fifo_intf.S_AXIS_TLAST = 'd0;
             fifo_intf.S_AXIS_TVALID = 'd0;

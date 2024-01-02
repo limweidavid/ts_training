@@ -23,6 +23,7 @@ class fifo_sequence_item extends uvm_sequence_item;
 
     function new (string name = "fifo_sequence_item");
         super.new(name);
+        reset_dut = 'd0;
     endfunction
 
     `uvm_object_utils_begin(fifo_sequence_item)

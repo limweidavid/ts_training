@@ -1,3 +1,19 @@
+///////////////////////////////////////////////////////////////////////////
+//
+// File name         : 
+// Author            : Shamaim
+// Creation Date     : January 1st, 2024
+//
+// No portions of this material may be reproduced in any form without
+// the written permission of Thundersoft
+//
+// No portions of this material may be reproduced in any form without
+// the written permission of Thundersoft
+//
+// Description : 
+//
+///////////////////////////////////////////////////////////////////////////
+
 class reg_space_random_sequence extends uvm_sequence #(reg_space_sequence_item);
   
   `uvm_object_utils(reg_space_random_sequence)
@@ -10,9 +26,13 @@ class reg_space_random_sequence extends uvm_sequence #(reg_space_sequence_item);
     
     req = reg_space_sequence_item::type_id::create("req");
 
+    `uvm_info(get_type_name(), "----- Starting Sequence -----", UVM_MEDIUM)
+
     start_item(req);
     req.randomize();
     finish_item(req);
+
+    `uvm_info(get_type_name(), "----- Ending Sequence -----", UVM_MEDIUM)
 
   endtask
 
@@ -30,11 +50,15 @@ class reg_space_random_write_sequence extends uvm_sequence #(reg_space_sequence_
     
     req = reg_space_sequence_item::type_id::create("req");
 
+    `uvm_info(get_type_name(), "----- Starting Sequence -----", UVM_MEDIUM)
+
     start_item(req);
     req.randomize() with {
       write_read == 'd0;
     };
     finish_item(req);
+
+    `uvm_info(get_type_name(), "----- Ending Sequence -----", UVM_MEDIUM)
 
   endtask
 
@@ -55,6 +79,8 @@ class reg_space_directed_write_sequence extends uvm_sequence #(reg_space_sequenc
     
     req = reg_space_sequence_item::type_id::create("req");
 
+    `uvm_info(get_type_name(), "----- Starting Sequence -----", UVM_MEDIUM)
+
     start_item(req);
     req.randomize() with {
       write_read == 'd0;
@@ -62,6 +88,8 @@ class reg_space_directed_write_sequence extends uvm_sequence #(reg_space_sequenc
       address == user_address;
     };
     finish_item(req);
+
+    `uvm_info(get_type_name(), "----- Ending Sequence -----", UVM_MEDIUM)
 
   endtask
 
@@ -79,11 +107,15 @@ class reg_space_random_read_sequence extends uvm_sequence #(reg_space_sequence_i
     
     req = reg_space_sequence_item::type_id::create("req");
 
+    `uvm_info(get_type_name(), "----- Starting Sequence -----", UVM_MEDIUM)
+
     start_item(req);
     req.randomize() with {
       write_read == 'd1;
     };
     finish_item(req);
+
+    `uvm_info(get_type_name(), "----- Ending Sequence -----", UVM_MEDIUM)
 
   endtask
 
@@ -103,12 +135,16 @@ class reg_space_directed_read_sequence extends uvm_sequence #(reg_space_sequence
     
     req = reg_space_sequence_item::type_id::create("req");
 
+    `uvm_info(get_type_name(), "----- Starting Sequence -----", UVM_MEDIUM)
+
     start_item(req);
     req.randomize() with {
       write_read == 'd0;
       address == user_address;
     };
     finish_item(req);
+
+    `uvm_info(get_type_name(), "----- Ending Sequence -----", UVM_MEDIUM)
 
   endtask
 
