@@ -59,3 +59,32 @@ class fifo_random_put_test extends dut_base_test;
   endtask
 
 endclass
+
+class reg_space_random_rw_test extends dut_base_test;
+
+  `uvm_component_utils (reg_space_random_rw_test)
+
+  reset_sequence reset_dut;
+  reg_space_directed_write_sequence reg_wr_sequence;
+
+  function new(string name, uvm_component parent);
+    super.new(name, parent);
+  endfunction
+
+  function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+    reset_dut = reset_sequence::type_id::create("reset_dut", this);
+    reg_wr_sequence = reg_space_directed_write_sequence::type_id::create("reg_wr_sequence", this);
+  endfunction
+
+  virtual task run_phase(uvm_phase phase);
+    phase.raise_objection(this);
+    reset_dut.start(my_env.fifo_agnt.seqr);
+
+    reg_wr_sequence.user_data = 'h5A5A5A5A;
+    reg_wr_sequence.user_address = 'h04;
+    reg_wr_sequence.start(my_env.reg_space_agnt.seqr);
+    phase.drop_objection(this);
+  endtask
+
+endclass
