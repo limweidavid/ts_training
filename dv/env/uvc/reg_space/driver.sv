@@ -47,19 +47,35 @@ class reg_space_driver extends uvm_driver #(reg_space_sequence_item);
     virtual task write_data();
         if(req.write_read == 'd0) begin
           fork
-            address_write_channel();
-            data_write_channel();
-            bresp_channel();
-          join
+            begin
+              fork
+                address_write_channel();
+                data_write_channel();
+                bresp_channel();
+              join
+            end
+            begin
+              repeat(50)@(posedge reg_space_intf.clk);
+              `uvm_fatal(get_type_name(), "----- Timeout Occured while Write -----")
+            end
+          join_any
         end
     endtask
 
     virtual task read_data();
         if(req.write_read == 'd1) begin
           fork
-            address_read_channel();
-            data_read_channel();
-          join
+            begin
+              fork
+                address_read_channel();
+                data_read_channel();
+              join
+            end
+            begin
+              repeat(50)@(posedge reg_space_intf.clk);
+              `uvm_fatal(get_type_name(), "----- Timeout Occured while Read -----")
+            end
+          join_any
         end
     endtask
 
