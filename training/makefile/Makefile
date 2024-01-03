@@ -21,7 +21,17 @@ ifdef core3
 	endif
 endif
 
-vcs_cmd = vcs ${cmd1} ${cmd2}
+ifndef TOP
+	top = top.sv
+endif
+
+ifdef RUN
+	run = -R
+endif
+
+ifdef COV
+	cov = -cm line+cond
+endif
 
 #make printf1
 include ./file1.mk
@@ -29,16 +39,17 @@ include ./file1.mk
 test:
 	echo "testing123"
 
-#make cpu core1=1 core2=1 core3=1 core3.1=1
 cpu:
 	echo "Running cpu"
 	echo "1. ${VAR1}"
 	echo "2. ${VAR2}" 
 	echo "3. ${VAR3}" 
 
-#make cmd cmd1="-sverilog -full64" cmd2=-R
-cmd:
+vcs_cmd = vcs -sverilog ${run} ${cov} ${top}
+
+test_build:
 	echo "${vcs_cmd}"
+
 
 arg2="arg2_string"
 build:
@@ -60,6 +71,11 @@ pwd_string = $(shell pwd)
 date_pwd:
 	echo ${date_string}
 	echo ${pwd_string}
+
+gen_and_mv_newfile_here:
+	cd dir1 ;\
+	make create_file ;\
+	mv newfile ..
 
 run_py:
 	mkdir -p testdir ;\
