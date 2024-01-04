@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:spirit>
+	<spirit:library>TS_TRAINING</spirit:library>
+	<spirit:version>1.0</spirit:version>
+		<spirit:register>
+			<spirit:name>reg1</spirit:name>
+			<spirit:size>32bit</spirit:size>
+			<spirit:access>read-write</spirit:access>
+		</spirit:register>
+		<spirit:register>
+			<spirit:name>reg2</spirit:name>
+			<spirit:size>8bit</spirit:size>
+			<spirit:access>read-only</spirit:access>
+		</spirit:register>
+</spirit:component>
