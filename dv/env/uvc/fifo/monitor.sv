@@ -36,8 +36,8 @@ class fifo_master_monitor extends uvm_monitor;
     endfunction
 
     virtual task run_phase (uvm_phase phase);
-        seq_item = fifo_sequence_item::type_id::create("seq_item", this);
         forever begin
+          seq_item = fifo_sequence_item::type_id::create("seq_item", this);
           monitor_data();
         end
     endtask
@@ -73,8 +73,8 @@ class fifo_slave_monitor extends uvm_monitor;
     endfunction
 
     virtual task run_phase (uvm_phase phase);
-        seq_item = fifo_sequence_item::type_id::create("seq_item", this);
         forever begin
+          seq_item = fifo_sequence_item::type_id::create("seq_item", this);
           monitor_data();
         end
     endtask

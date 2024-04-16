@@ -16,14 +16,15 @@
 
 class reg_space_sequence_item extends uvm_sequence_item;
 
-    rand bit [31:0] data;
-    rand bit [31:0] address;
+    randc bit [31:0] data;
+    randc bit [31:0] address;
     rand bit write_read;
     
     bit slave_error;
 
-    constraint addr_limit {address <= 'hff;}
-    constraint addr_mapp {address[1:0] == 'd0;}
+    constraint addr_limit { address >= 'd0;
+                            address <= 'd7;}
+    //constraint addr_mapp {address[1:0] == 'd0;}
 
     function new (string name = "reg_space_sequence_item");
         super.new(name);

@@ -6,8 +6,8 @@ package dut_uvm_package;
   import fifo_uvc_package::*;
   import reg_space_uvc_package::*;
 
+  `include "env/scoreboard.sv"
   `include "env/environment.sv"
-  //`inlcude "env/scoreboard.sv"
   `include "sequences/fifo_sequences.sv"
   `include "sequences/reg_space_sequences.sv"
   `include "tests/dut_tests.sv"

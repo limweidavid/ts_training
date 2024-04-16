@@ -42,8 +42,11 @@ class reg_space_random_write_sequence extends uvm_sequence #(reg_space_sequence_
   
   `uvm_object_utils(reg_space_random_write_sequence)
 
+  bit [31:0] repeat_transaction;
+
   function new(string name = "reg_space_random_write_sequence");
     super.new(name);
+    repeat_transaction = 1;
   endfunction
 
   virtual task body();
@@ -51,13 +54,13 @@ class reg_space_random_write_sequence extends uvm_sequence #(reg_space_sequence_
     req = reg_space_sequence_item::type_id::create("req");
 
     `uvm_info(get_type_name(), "----- Starting Sequence -----", UVM_MEDIUM)
-
-    start_item(req);
-    req.randomize() with {
-      write_read == 'd0;
-    };
-    finish_item(req);
-
+    repeat (repeat_transaction) begin
+      start_item(req);
+      req.randomize() with {
+        write_read == 'd0;
+      };
+      finish_item(req);
+    end
     `uvm_info(get_type_name(), "----- Ending Sequence -----", UVM_MEDIUM)
 
   endtask
@@ -99,8 +102,11 @@ class reg_space_random_read_sequence extends uvm_sequence #(reg_space_sequence_i
   
   `uvm_object_utils(reg_space_random_read_sequence)
 
+  bit [31:0] repeat_transaction;
+
   function new(string name = "reg_space_random_read_sequence");
     super.new(name);
+    repeat_transaction = 'b1;
   endfunction
 
   virtual task body();
@@ -108,13 +114,13 @@ class reg_space_random_read_sequence extends uvm_sequence #(reg_space_sequence_i
     req = reg_space_sequence_item::type_id::create("req");
 
     `uvm_info(get_type_name(), "----- Starting Sequence -----", UVM_MEDIUM)
-
-    start_item(req);
-    req.randomize() with {
-      write_read == 'd1;
-    };
-    finish_item(req);
-
+    repeat (repeat_transaction) begin
+      start_item(req);
+      req.randomize() with {
+        write_read == 'd1;
+      };
+      finish_item(req);
+    end
     `uvm_info(get_type_name(), "----- Ending Sequence -----", UVM_MEDIUM)
 
   endtask
@@ -123,7 +129,7 @@ endclass
 
 class reg_space_directed_read_sequence extends uvm_sequence #(reg_space_sequence_item);
   
-  `uvm_object_utils(reg_space_directed_write_sequence)
+  `uvm_object_utils(reg_space_directed_read_sequence)
 
   bit [31:0] user_address;
 
@@ -139,7 +145,7 @@ class reg_space_directed_read_sequence extends uvm_sequence #(reg_space_sequence
 
     start_item(req);
     req.randomize() with {
-      write_read == 'd0;
+      write_read == 'd1;
       address == user_address;
     };
     finish_item(req);
