@@ -17,6 +17,8 @@ module tb;
         @(posedge clk) a ##2 b;
     endproperty
 
+    assert property (p1);
+
     initial begin
         //$assertoff();
         #2 a = 1;
