@@ -1,4 +1,13 @@
 TEST ?= fifo_random_put_test
+
+CODE_COV_EN ?= 0
+
+ifeq (${CODE_COV_EN}, 1)
+	CODE_COV = -cm line+tgl+cond+branch+assert+fsm
+else
+	CODE_COV = 
+endif
+
 .SILENT:
 
 test:
@@ -20,9 +29,13 @@ clean:
 	rm -rf work_*
 	rm -rf simv
 	rm -rf DVEfiles
+	rm -rf urgReport
 	rm -rf ucli.key
 	rm -rf inter.vpd
 	rm -rf wave.vcd
+	rm -rf *.vdb
+	rm -rf *.setup
+	rm -rf .fsm.sch.verilog.xml
 
 build_uvm:
 	vlogan -work work_uvm \
@@ -60,8 +73,11 @@ buildrun:
 	make run
 
 test_build: 
-	vcs -sverilog -ntb_opts uvm-1.2 -full64 -debug_access+all -top tb_top -file ${RTL_ROOT}/files.f -file ${DV_ROOT}/tb/filelist.f -override_timescale=1ps/1fs +vcs+lic+wait 
+	vcs ${CODE_COV} -sverilog -ntb_opts uvm-1.2 -full64 -debug_access+all -top tb_top -file ${RTL_ROOT}/files.f -file ${DV_ROOT}/tb/filelist.f -override_timescale=1ps/1fs +vcs+lic+wait 
 
 test_sim: 
-	./simv +UVM_TESTNAME=${TEST}
+	./simv ${CODE_COV} +UVM_TESTNAME=${TEST}
+
+report:
+	urg -dir simv.vdb
 

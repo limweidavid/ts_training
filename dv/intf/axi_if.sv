@@ -34,4 +34,26 @@ interface reg_space_interface #(parameter WIDTH=32) (input clk, input resetn);
     logic [   1:0] axi_rresp    ;
     logic          axi_rvalid   ;
     logic          axi_rready   ;
+
+
+    covergroup write_address_cg @(posedge clk);
+        valid : coverpoint axi_awvalid;
+        ready : coverpoint axi_awready;
+        address : coverpoint axi_awaddr;
+    endgroup : write_address_cg
+
+    covergroup write_data_cg @(posedge clk);
+        valid : coverpoint axi_wvalid;
+        ready : coverpoint axi_wready;
+        data : coverpoint axi_wdata {
+                        bins b1 = {0,2,7}; //increments for addr = 0,2 or 7
+                        bins b2   = {[30:40],[50:60],77}; //increments for data = 30-40 or 50-60 or 77                  
+                        bins b3[] = {[79:99],[110:130],140}; //creates three bins b3[0],b3[1] and b3[3] with values 79-99,110-130 and 140 respectively
+                        bins b4[] = {160,170,180}; //creates three bins b4[0],b4[1] and b4[3] with values
+                        bins b5   = (10=>20=>30); //transition from 10->20->30
+                        }
+    endgroup : write_data_cg
+
+    write_address_cg aw_channel_cg = new();
+    write_data_cg aw_data_cg = new();
 endinterface

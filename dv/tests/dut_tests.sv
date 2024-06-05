@@ -148,10 +148,10 @@ class reg_space_mult_random_rw_test extends dut_base_test;
     phase.raise_objection(this);
     reset_dut.start(my_env.fifo_agnt.seqr);
 
-    reg_wr_sequence.repeat_transaction = 'd8;
+    reg_wr_sequence.repeat_transaction = 'd20;
     reg_wr_sequence.start(my_env.reg_space_agnt.seqr);
     
-    reg_rd_sequence.repeat_transaction = 'd8;
+    reg_rd_sequence.repeat_transaction = 'd20;
     reg_rd_sequence.start(my_env.reg_space_agnt.seqr);
 
     phase.drop_objection(this);
